@@ -22,7 +22,7 @@ In pc
 ~~~~
 export KERNEL_SRC=<kernel path>
 git clone https://github.com/HidetoKimura/rpi4-led-act.git
-cd rpi-led-act
+cd rpi4-led-act
 make
 scp  rpi4_led_act_driver.ko rpi@raspberrypi.local:
 ~~~~
