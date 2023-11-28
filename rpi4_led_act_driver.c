@@ -1,4 +1,3 @@
-
 #include <linux/module.h>
 #include <linux/fs.h>
 #include <linux/platform_device.h>
@@ -25,29 +24,16 @@ struct led_dev
 #define GPIO_BASE			(BCM2710_PERI_BASE + 0x200000)	/* GPIO controller: FE200000 */
 
 #define GPIO_42			42
-//#define GPIO_27			27
-//#define GPIO_22			22
-//#define GPIO_26			26
 
 /* to set and clear each individual LED */
 #define GPIO_42_INDEX 	1 << (GPIO_42 % 32)
-//#define GPIO_27_INDEX 	1 << (GPIO_27 % 32)
-//#define GPIO_22_INDEX 	1 << (GPIO_22 % 32)
-//#define GPIO_26_INDEX 	1 << (GPIO_26 % 32)
 
 /* select the output function */
 #define GPIO_42_FUNC	1 << ((GPIO_42 % 10) * 3)
-//#define GPIO_27_FUNC	1 << ((GPIO_27 % 10) * 3)
-//#define GPIO_22_FUNC 	1 << ((GPIO_22 % 10) * 3)
-//#define GPIO_26_FUNC 	1 << ((GPIO_26 % 10) * 3)
 
 /* mask the GPIO functions */
 #define FSEL_42_MASK 	0b111 << ((GPIO_42 % 10) * 3) /* red since bit 21 (FSEL27) */
-//#define FSEL_27_MASK 	0b111 << ((GPIO_27 % 10) * 3) /* red since bit 21 (FSEL27) */
-//#define FSEL_22_MASK 	0b111 << ((GPIO_22 % 10) * 3) /* green since bit 6 (FSEL22) */
-//#define FSEL_26_MASK 	0b111 << ((GPIO_26 % 10) * 3) /* blue  a partir del bit 18 (FSEL26) */
 
-//#define GPIO_SET_FUNCTION_LEDS (GPIO_27_FUNC | GPIO_22_FUNC | GPIO_26_FUNC)
 #define GPIO_MASK_ALL_LEDS 	FSEL_42_MASK
 #define GPIO_SET_ALL_LEDS   GPIO_42_INDEX
 
@@ -186,23 +172,12 @@ static int led_probe(struct platform_device *pdev)
 		
 	led_device = devm_kzalloc(&pdev->dev, sizeof(struct led_dev), GFP_KERNEL);
 
-//	of_property_read_string(pdev->dev.of_node, "label", &led_device->led_name);
 	led_device->led_name = "ledact";
 	led_device->led_misc_device.minor = MISC_DYNAMIC_MINOR;
 	led_device->led_misc_device.name = led_device->led_name;
 	led_device->led_misc_device.fops = &led_fops;
 
 	led_device->led_mask = GPIO_42_INDEX;
-
-#if 0
-	if (strcmp(led_device->led_name,"act") == 0) {
-		led_device->led_mask = GPIO_42_INDEX;
-	}
-	else {
-		pr_info("Bad device tree value\n");
-		return -EINVAL;
-	}
-#endif
 
 	/* Initialize the led status to off */
 	memcpy(led_device->led_value, led_val, sizeof(led_val));
@@ -300,7 +275,7 @@ module_init(led_init);
 module_exit(led_exit);
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Alberto Liberal <aliberal@arroweurope.com>");
+MODULE_AUTHOR("Hideto Kimura");
 MODULE_DESCRIPTION("This is a platform driver that turns on/off \
-					three led devices");
+					the ACT LED of the Raspberry Pi 4");
 
