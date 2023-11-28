@@ -37,23 +37,20 @@ rmmod rpi4_led_act_driver
 
 In pc
 ~~~~
-$ cd dts
-$ dtc -O dtb -o ledact.dtbo ledact.dts 
-$ scp ledact.dtbo rpi@raspberrypi.local:
+cd dts
+dtc -O dtb -o ledact.dtbo ledact.dts 
+scp ledact.dtbo rpi@raspberrypi.local:
 ~~~~
 
 In rpi
 ~~~~
-$ sudo cp ledact.dtbo /boot/overlay/
-$ sync
+cp ledact.dtbo /boot/overlay/
+sync
 ~~~~
 
 # modify /boot/config.txt
 
 In rpi
 ~~~~
-dtparam=i2c_arm=on
-dtparam=spi=on
-
 dtoverlay=ledact
 ~~~~
