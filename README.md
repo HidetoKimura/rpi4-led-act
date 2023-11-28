@@ -18,8 +18,6 @@ make modules_install
 
 # build LKM
 
-- make all
-
 In pc
 ~~~~
 export KERNEL_SRC=<kernel path>
